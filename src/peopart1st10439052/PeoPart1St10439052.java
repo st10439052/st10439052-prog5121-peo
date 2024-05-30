@@ -4,7 +4,13 @@
  */
 package peopart1st10439052;
 
+import java.awt.GridLayout;
+import java.util.Objects;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -86,9 +92,146 @@ System.out.println("you have successfully created account username " + username 
             System.out.println("Username or password incorrect, please try again.");
             }
         }
+//part 2
+ if (isAuthenticated == true){
+
+ int iAmountTask;   
+iAmountTask =Integer.parseInt( JOptionPane.showInputDialog("Enter amount tasks"));   
+
+        
+        
+        //prompt shown to the user
+        String sNumMenu = "\n Please Choose One Of The Following Options\n"
+                + "1) Add Tasks\n"
+                + "2) Show Report\n"
+                + "3) Quit ";
+
+        String sSelectedNum = "0";
+        
+
+        do{
+           sSelectedNum = JOptionPane.showInputDialog(sNumMenu);
+             
+        switch (Integer.parseInt(sSelectedNum)) {
+            case 1:
+
+        {
+
+        String[] taskDescriptions = new String[iAmountTask];
+        String[] developerDetails = new String[iAmountTask];
+        String[] taskIDs = new String[iAmountTask];
+        String[] taskStatuses = new String[iAmountTask];
+
+        int currentTaskCount = 0;
+        int totalHours = 0;
+
+        while (currentTaskCount < iAmountTask) {
+            // Create a custom panel with input fields
+            JPanel panel = new JPanel(new GridLayout(6, 2)); // Add one row for Task Number, Task Name, and Duration
+            JTextField descriptionField = new JTextField(20);
+            JTextField developerField = new JTextField(20);
+            JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"To Do", "Doing", "Done"});
+            JTextField taskNumberField = new JTextField(20); // New field for Task Number
+            JTextField taskNameField = new JTextField(20); // New field for Task Name
+            JTextField durationField = new JTextField(20); // New field for Duration
+
+            panel.add(new JLabel("Task Description:"));
+            panel.add(descriptionField);
+            panel.add(new JLabel("Developer Details:"));
+            panel.add(developerField);
+            panel.add(new JLabel("Task Status:"));
+            panel.add(statusComboBox);
+            panel.add(new JLabel("Task Number:")); // Add label for Task Number
+            panel.add(taskNumberField);
+            panel.add(new JLabel("Task Name:")); // Add label for Task Name
+            panel.add(taskNameField);
+            panel.add(new JLabel("Duration (hours):")); // Add label for Duration
+            panel.add(durationField);
+
+            int result = JOptionPane.showConfirmDialog(null, panel,
+                    "Enter Task Details", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+                // Get the input values
+                String taskDescription = descriptionField.getText();
+                String developerDetail = developerField.getText();
+                String taskStatus = Objects.requireNonNull(statusComboBox.getSelectedItem()).toString();
+                String taskNumber = taskNumberField.getText();
+                String taskName = taskNameField.getText();
+                String durationString = durationField.getText();
+
+                // Validate inputs here...
+
+                // Calculate total hours
+                int duration;
+                try {
+                    duration = Integer.parseInt(durationString);
+                    totalHours += duration;
+                } catch (NumberFormatException e) {
+                    
+                    JOptionPane.showMessageDialog(null, "Error: Invalid duration format. Please enter a valid number.");
+                    continue;
+                }
+
+                // Generate the Task ID (format: TSK<number>)
+                String taskId = taskName + ":" + taskNumber + ":" + developerDetail.substring(developerDetail.length() - 3).toUpperCase();
+                taskIDs[currentTaskCount] = taskId;
+
+                // Store the task details
+                taskDescriptions[currentTaskCount] = taskDescription;
+                developerDetails[currentTaskCount] = developerDetail;
+                taskStatuses[currentTaskCount] = taskStatus;
+
+                currentTaskCount++;
+            } else {
+                break; // User clicked on Cancel or closed the dialog
+            }
+        }
+
+        // Display the stored data
+        StringBuilder displayMessage = new StringBuilder("Task Details:\n");
+        for (int i = 0; i < currentTaskCount; i++) {
+            displayMessage.append("Task ID: ").append(taskIDs[i]).append("\n");
+            displayMessage.append("Description: ").append(taskDescriptions[i]).append("\n");
+            displayMessage.append("Developer: ").append(developerDetails[i]).append("\n");
+            displayMessage.append("Status: ").append(taskStatuses[i]).append("\n\n");
+        }
+
+        JOptionPane.showMessageDialog(null, displayMessage.toString(), "Tasks", JOptionPane.INFORMATION_MESSAGE);
+        
+            // Display total hours
+            System.out.println("Total Hours: " + totalHours);
+        }
+
+        
+
+                
+            break;
+            
+            case 2:
+                System.out.println("Coming Soon");    
+            break;
+            
+            case 3:
+                System.out.println("Quiting Application");
+                System.exit(0);
+            break;
+                  
+            default:
+                System.out.println("Please enter a Value From 1 to 3");;
+        }
+        }while (!(Integer.parseInt(sSelectedNum) == 3));
+
+
+}        
     }
+
+}
+       
+
+    
+    
     
 
-    }
     
 
